@@ -1,22 +1,32 @@
 package studio8;
 
 public class SelectAllQuestion extends MultipleChoiceQuestion {
+	
 
 	public SelectAllQuestion(String prompt, String answer, String[] choices) {
-		//Hint: 1 point per choice
-		//FIXME
+		super(prompt,answer,choices.length,choices);
 	}
 	
 	public int checkAnswer(String givenAnswer) {
-		//FIXME Should return partial credit (if earned)!
-		return 0;
+		int point = super.getPoints();
+		for(int i=0;i<givenAnswer.length();i++) {
+			if(super.getAnswer().indexOf(givenAnswer.charAt(i))==-1) {
+				point--;
+			}
+		}
+		for(int j = 0; j<super.getAnswer().length();j++) {
+			if(givenAnswer.indexOf(super.getAnswer().charAt(j))==-1) {
+				point--;
+			}
+		}
+
+		return point;
 	}
 	
 	public static void main(String[] args) {
 		String[] choices = {"instance variables", "git", "methods", "eclipse"};
 		Question selectAll = new SelectAllQuestion("Select all of the following that can be found within a class:", "13", choices);
 		selectAll.displayPrompt();
-		System.out.println(selectAll.checkAnswer("hi")); //no credit
 		System.out.println(selectAll.checkAnswer("13")); //full credit
 		System.out.println(selectAll.checkAnswer("31")); //full credit
 		System.out.println(selectAll.checkAnswer("1")); //3 points
